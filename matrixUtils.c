@@ -156,3 +156,61 @@ void *exec_sort(void *arg) {
 
 	return NULL;
 }
+
+
+int **matrix_multiplication(int **mtx_a, int **mtx_b, int l_a, int c_a) {
+	int **result_mtx = create_matrix(l_a,c_a,0);
+
+	for(int i = 0; i < l_a; i++) {
+		for(int j = 0; j < c_a; j++) {
+			for(int result_l = 0; result_l < l_a; result_l++) {
+				result_mtx[i][j] += mtx_a[i][result_l] * mtx_b[result_l][j];
+			}
+		}
+	}
+
+	return result_mtx;
+}
+
+int **matrix_multiplication_multi_thread(int **mtx_a, int **mtx_b, int l_a, int c_b, int nthreads) {
+  int **result_mtx = create_matrix(l_a, c_b, 0);
+  pthread_t *threads;
+  Multiply_thread_param *args;
+
+  threads = (pthread_t *) malloc(nthreads * sizeof(pthread_t));
+  args = (Multiply_thread_param *) malloc(nthreads * sizeof(Multiply_thread_param));
+
+  for(int i = 0; i < nthreads; i++){
+    args[i].row_start = i * (l_a / nthreads);
+    args[i].row_end = ((i+1) * (l_a / nthreads));
+    if( (i == nthreads-1) && (l_a % nthreads))
+      args[i].row_end = args[i].row_end + (l_a % nthreads) ;
+    args[i].c_b = &c_b; //should be l_a (?)
+    args[i].mtx_a = mtx_a;
+    args[i].mtx_b = mtx_b;
+    args[i].result_mtx = result_mtx;
+    pthread_create( &threads[i], NULL, exec_mult, (void *) (args+i) );
+  }
+
+  for (int i = 0; i < nthreads; i++)
+  {
+     pthread_join(threads[i], NULL);
+  }
+
+	return result_mtx;
+}
+
+void *exec_mult(void *arg) {
+  Multiply_thread_param *param = (Multiply_thread_param *) arg;
+  int cell_result;
+  for(int i = param->row_start; i < param->row_end; i++) {
+    for(int j = 0; j < *(param->c_b); j++){ //columns of mtx_b
+      cell_result = 0; //initialize the sum (it will be the cell's value)
+      for(int k = 0; k < *(param->c_b); k++) {
+        cell_result += param->mtx_a[i][k] * param->mtx_b[k][j];
+      }
+      param->result_mtx[i][j] = cell_result;
+    }
+  }
+  return NULL;
+}
