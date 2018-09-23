@@ -3,7 +3,7 @@
 CC = gcc
 CCFLAGS = -pthread -Wall -g -O3 -std=gnu99
 LDFLAGS =
-TARGET = matrix_sort gera_matriz matriz_map
+TARGET = matrix_sort gera_matriz matriz_map ind_sort
 EXE = ./gera_matriz
 
 all: $(TARGET)
@@ -16,6 +16,9 @@ all: $(TARGET)
 
 matrix_sort: matrix_sort.c tools.o matrixUtils.o merge.o
 	$(CC) $(CCFLAGS)  matrixUtils.o merge.o tools.o matrix_sort.c -o $@ $(LDFLAGS)
+
+ind_sort: ind_sort.c tools.o matrixUtils.o merge.o
+	$(CC) $(CCFLAGS)  matrixUtils.o merge.o tools.o ind_sort.c -o $@ $(LDFLAGS)
 
 gera_matriz: matriz.o tools.o gera_matriz.c
 	$(CC) $(CCFLAGS) matriz.o tools.o gera_matriz.c -o $@ $(LDFLAGS)
