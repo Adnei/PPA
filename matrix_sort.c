@@ -35,8 +35,8 @@ int main(int argc, char** argv){
 	f_sorted_mtx = fopen("sortedMtx.map","w");
 
 	extrai_parametros_matriz(f_mtx, &(mtx.LINE), &(mtx.COLUMN), &(mtx.v_line), &(mtx.n_line));
-  mtx.mtx = alloc_matrix(mtx.LINE, mtx.COLUMN);
-  filein_matriz (mtx.mtx, mtx.LINE, mtx.COLUMN, f_mtx, mtx.v_line, mtx.n_line);
+	mtx.mtx = alloc_matrix(mtx.LINE, mtx.COLUMN);
+	filein_matriz (mtx.mtx, mtx.LINE, mtx.COLUMN, f_mtx, mtx.v_line, mtx.n_line);
 
 	sorted_mtx.LINE = mtx.LINE;
 	sorted_mtx.COLUMN = mtx.COLUMN;
