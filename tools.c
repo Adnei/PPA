@@ -1,8 +1,19 @@
 #include "tools.h"
 #include <time.h>
+#include <string.h>
 #include <sys/time.h>
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FERRAMENTAS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+char *get_file_name(char *arg){
+  char *file_name = (char *) malloc((9 + sizeof(arg)) * sizeof(char));
+  strcat(file_name,arg);
+  strcat(file_name,"x");
+  strcat(file_name,arg);
+  strcat(file_name,"-mat.map");
+
+  return file_name;
+}
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 double wtime() {

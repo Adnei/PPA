@@ -14,7 +14,8 @@ int main(int argc, char** argv){
 	FILE *f_mtx, *f_sorted_mtx;
 	Matrix mtx, sorted_mtx;
 
-	f_mtx = fopen(argv[1],"r");
+	// f_mtx = fopen(argv[1],"r");
+	f_mtx = fopen(get_file_name(argv[1]),"r");
 	f_sorted_mtx = fopen("sortedMtx.map","w");
 
 	//read matrix from file
@@ -33,7 +34,7 @@ int main(int argc, char** argv){
 	int *sorted_array = dummy_array_sort(vectorized_mtx, mtx.LINE * mtx.COLUMN, N_TH);
 	gettimeofday( &t_end, NULL );
 
-	printf("\nArray sort finished\n");
+	// printf("\nArray sort finished\n");
 	print_exectime(t_start,t_end);
 
 	//write the sorted matrix into the result file

@@ -65,7 +65,7 @@ void print_exectime(struct timeval t_start, struct timeval t_end) {
     exectime = (t_end.tv_sec - t_start.tv_sec) * 1000.0; // sec to ms
     exectime += (t_end.tv_usec - t_start.tv_usec) / 1000.0; // us to ms
 
-    printf("\nExecution time: %.3lf sec\n", exectime/1000.0);
+    printf("%.6lf",exectime/1000.0);
 }
 
 int *vectorize(int **mtx, int line, int column) {

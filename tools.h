@@ -12,3 +12,4 @@ int filein_matriz (int **matriz, int linha, int coluna, FILE *file, int *vet_ind
 int conta_line_file ( FILE *const fin, int get_line, int nro_line, int *vet_line );
 int nr_line_file ( FILE *const fin, int *vet_line );
 int extrai_parametros_matriz ( FILE *const fin, int* linha, int *coluna, int **vet_line, int *nr_line );
+char *get_file_name(char *arg);

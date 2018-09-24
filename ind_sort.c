@@ -17,7 +17,7 @@ int main(int argc, char** argv){
 
   struct timeval t_start, t_end;
 
-  f_mtx = fopen(argv[1],"r");
+  f_mtx = fopen(get_file_name(argv[1]),"r");
   f_sorted_mtx = fopen("sortedIndMtx.map","w");
 
   //read matrix from file
@@ -42,7 +42,7 @@ int main(int argc, char** argv){
   sorted_mtx.mtx = line_merge_sort(sorted_mtx,N_TH);
 
   gettimeofday( &t_end, NULL );
-  printf("\nFucked up matrix sort finished\n");
+  // printf("\nFucked up matrix sort finished\n");
   print_exectime(t_start,t_end);
 
   fileout_matriz(sorted_mtx.mtx, sorted_mtx.LINE, sorted_mtx.COLUMN, f_sorted_mtx);
