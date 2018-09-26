@@ -34,6 +34,7 @@ matriz_map: gera_matriz
 	$(EXE) 500 500 > /dev/null
 	$(EXE) 1000 1000 > /dev/null
 	$(EXE) 1500 1500 > /dev/null
+	$(EXE) 5000 5000 > /dev/null #remove
 
 clean:
 	rm -rf *.o *~ $(TARGET) *.map *logs
