@@ -2,8 +2,8 @@
 
 CC = gcc
 CCFLAGS = -pthread -Wall -g -O3 -std=gnu99
-LDFLAGS =
-TARGET = matrix_sort gera_matriz matriz_map ind_sort matrix_multiply
+LDFLAGS = --openmp
+TARGET = matrix_sort gera_matriz ind_sort matrix_multiply matrix_multiply_openMP matriz_map
 EXE = ./gera_matriz
 
 all: $(TARGET)
@@ -26,6 +26,9 @@ gera_matriz: matriz.o tools.o gera_matriz.c
 matrix_multiply: matrix_multiply.c tools.o matrixUtils.o merge.o
 	$(CC) $(CCFLAGS)  matrixUtils.o merge.o tools.o matrix_multiply.c -o $@ $(LDFLAGS)
 
+matrix_multiply_openMP: matrix_multiply_openMP.c tools.o matrixUtils.o merge.o
+	$(CC) $(CCFLAGS)  matrixUtils.o merge.o tools.o matrix_multiply_openMP.c -o $@ $(LDFLAGS)
+
 matriz_map: gera_matriz
 	$(EXE) 3 3 > /dev/null
 	$(EXE) 4 4 > /dev/null
@@ -33,6 +36,7 @@ matriz_map: gera_matriz
 	$(EXE) 100 100 > /dev/null
 	$(EXE) 500 500 > /dev/null
 	$(EXE) 1000 1000 > /dev/null
+	$(EXE) 2000 2000 > /dev/null
 
 clean:
 	rm -f *.o *~ $(TARGET) *.map

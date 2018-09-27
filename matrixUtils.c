@@ -1,4 +1,3 @@
-#include <pthread.h>
 #include "matrixUtils.h"
 #include "merge.h"
 
@@ -195,6 +194,31 @@ int **matrix_multiplication_multi_thread(int **mtx_a, int **mtx_b, int l_a, int 
   for (int i = 0; i < nthreads; i++)
   {
      pthread_join(threads[i], NULL);
+  }
+
+	return result_mtx;
+}
+
+
+int **matrix_multiplication_open_mp(int **mtx_a, int **mtx_b, int l_a, int c_b, int nthreads) {
+  int **result_mtx = create_matrix(l_a, c_b, 0);
+  Multiply_thread_param *args = (Multiply_thread_param *) malloc(nthreads * sizeof(Multiply_thread_param));
+
+  for(int i = 0; i < nthreads; i++){
+    args[i].row_start = i * (l_a / nthreads);
+    args[i].row_end = ((i+1) * (l_a / nthreads));
+    if( (i == nthreads-1) && (l_a % nthreads))
+      args[i].row_end = args[i].row_end + (l_a % nthreads) ;
+    args[i].c_b = &c_b; //should be l_a (?)
+    args[i].mtx_a = mtx_a;
+    args[i].mtx_b = mtx_b;
+    args[i].result_mtx = result_mtx;
+
+		//FIXME
+		#pragma omp parallel num_threads(nthreads)
+		{
+			exec_mult((void *) (args+i));
+		}
   }
 
 	return result_mtx;

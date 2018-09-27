@@ -1,8 +1,10 @@
+#include <omp.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
 #include <unistd.h>
 #include <time.h>
 #include <sys/time.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 //TODO: Better separe those fn's...
@@ -48,3 +50,5 @@ void *exec_sort(void *arg); //Fn executed by each thread
 int **matrix_multiplication(int **mtx_a, int **mtx_b, int l_a, int c_a); //l_a = lines of mtx_a and c_a = columns of mtx_a
 int **matrix_multiplication_multi_thread(int **mtx_a, int **mtx_b, int l_a, int c_b, int nthreads);
 void *exec_mult(void *arg);
+
+int **matrix_multiplication_open_mp(int **mtx_a, int **mtx_b, int l_a, int c_b, int nthreads);
