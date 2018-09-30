@@ -79,6 +79,22 @@ int *vectorize(int **mtx, int line, int column) {
     }
   }
 
+//REMOVE-ME PLX
+/*
+
+int i = 0, j = 0;
+for(int global = 0; global < line * column; global++){
+	if(j >= column){
+		j = 0;
+		i++;
+	}
+
+	result_vector[global] = mtx[i][j];
+	j++;
+}
+
+*/
+
   return result_vector;
 
 }
