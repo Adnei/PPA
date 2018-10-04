@@ -43,7 +43,9 @@ int main(int argc, char **argv) {
   mtx_d.mtx = create_matrix(mtx_d.LINE, mtx_d.COLUMN,0); //used to allocate the matrix and fill it with 0's;
 
   gettimeofday( &t_start_th, NULL );
-  mtx_c.mtx = matrix_multiplication_multi_thread(mtx_a.mtx, mtx_b.mtx , mtx_a.LINE, mtx_b.COLUMN , atoi(argv[3]));
+	//matrix_multiplication_omp
+  // mtx_c.mtx = matrix_multiplication_multi_thread(mtx_a.mtx, mtx_b.mtx , mtx_a.LINE, mtx_b.COLUMN , atoi(argv[3]));
+	mtx_c.mtx = matrix_multiplication_omp(mtx_a.mtx, mtx_b.mtx , mtx_a.LINE, mtx_b.COLUMN , atoi(argv[3]));
   gettimeofday( &t_end_th, NULL );
   printf("\nThreads\n");
   print_exectime(t_start_th,t_end_th);

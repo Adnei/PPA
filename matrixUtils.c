@@ -1,4 +1,5 @@
 #include <pthread.h>
+#include <omp.h>
 #include "matrixUtils.h"
 #include "merge.h"
 
@@ -116,7 +117,6 @@ int **array_to_mtx(int *arr, int line, int column) {
 	return result_mtx;
 }
 
-
 int *dummy_array_sort(int *arr, const int size, int nthreads) {
 
 	pthread_t *threads = (pthread_t *) malloc(nthreads * sizeof(pthread_t));
@@ -212,6 +212,37 @@ int **matrix_multiplication_multi_thread(int **mtx_a, int **mtx_b, int l_a, int 
   {
      pthread_join(threads[i], NULL);
   }
+
+	return result_mtx;
+}
+
+int **matrix_multiplication_omp(int **mtx_a, int **mtx_b, int l_a, int c_b, int nthreads) {
+	int **result_mtx = create_matrix(l_a, c_b, 0);
+	Multiply_thread_param *args;
+
+	args = (Multiply_thread_param *) malloc(nthreads * sizeof(Multiply_thread_param));
+
+  for(int i = 0; i < nthreads; i++){
+    args[i].row_start = i * (l_a / nthreads);
+    args[i].row_end = ((i+1) * (l_a / nthreads));
+    if( (i == nthreads-1) && (l_a % nthreads))
+      args[i].row_end = args[i].row_end + (l_a % nthreads) ;
+    args[i].c_b = &c_b; //should be l_a (?)
+    args[i].mtx_a = mtx_a;
+    args[i].mtx_b = mtx_b;
+    args[i].result_mtx = result_mtx;
+  }
+
+	//schedule static by default
+	#pragma omp parallel for num_threads(nthreads)
+	for(int count = 0; count < nthreads; count++){
+			exec_mult((void *) (args+count));
+	}
+
+	// #pragma omp parallel for schedule(dynamic) num_threads(nthreads)
+	// for(int count = 0; count < nthreads; count++){
+	// 		exec_mult((void *) (args+count));
+	// }
 
 	return result_mtx;
 }
